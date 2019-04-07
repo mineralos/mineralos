@@ -1,0 +1,8 @@
+ChangeLog:
+-------------------------------------------------------------------
+0003-G19-Board-Support.patch:			by zhangyh 20180412
+	1.added gpio driver for dm in uboot;
+	2.added updated firmware by IP_Set Key;
+
+0004-G19-Board-Support.patch:                   by zhangyh 20180522
+	1.start fan in uboot, speed 50%;

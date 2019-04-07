@@ -1,0 +1,8 @@
+[Unit]
+Description=Attach config ubi partition
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/ubiattach /dev/ubi_ctrl -m 10
+ExecStop=/sbin/ubidetach /dev/ubi_ctrl -m 10

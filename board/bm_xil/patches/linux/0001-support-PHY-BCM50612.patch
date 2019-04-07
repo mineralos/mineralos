@@ -1,0 +1,29 @@
+diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+index 1e9ad30..6ef843e 100644
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -571,7 +571,7 @@ static struct phy_driver broadcom_drivers[] = {
+ }, {
+ 	.phy_id		= PHY_ID_BCM5461,
+ 	.phy_id_mask	= 0xfffffff0,
+-	.name		= "Broadcom BCM5461",
++	.name		= "Broadcom BCM50612",
+ 	.features	= PHY_GBIT_FEATURES,
+ 	.flags		= PHY_HAS_INTERRUPT,
+ 	.config_init	= bcm54xx_config_init,
+diff --git a/include/linux/brcmphy.h b/include/linux/brcmphy.h
+index 4f087f8..91638b6 100644
+--- a/include/linux/brcmphy.h
++++ b/include/linux/brcmphy.h
+@@ -20,7 +20,7 @@
+ #define PHY_ID_BCM5421			0x002060e0
+ #define PHY_ID_BCM54210E		0x600d84a0
+ #define PHY_ID_BCM5464			0x002060b0
+-#define PHY_ID_BCM5461			0x002060c0
++#define PHY_ID_BCM5461			0x03625e62
+ #define PHY_ID_BCM54612E		0x03625e60
+ #define PHY_ID_BCM54616S		0x03625d10
+ #define PHY_ID_BCM57780			0x03625d90
+-- 
+2.7.4
+

@@ -1,0 +1,5 @@
+the_ROM_image:
+{
+   [bootloader] u-boot-spl.bin
+   [offset=0x100000]u-boot-dtb.img
+}

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_IM_FRONTEND
+	bool "im-frontend"
+	select BR2_PACKAGE_IM_BACKEND
+	help
+	  inno frontend js app

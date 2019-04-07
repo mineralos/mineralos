@@ -1,0 +1,5 @@
+config BR2_PACKAGE_BM_FRONTEND
+	bool "bm-frontend"
+	select BR2_PACKAGE_BM_BACKEND
+	help
+	  bitmain frontend js app

@@ -1,0 +1,25 @@
+diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
+index 58bf63a..9de46c3 100644
+--- a/include/configs/zynq-common.h
++++ b/include/configs/zynq-common.h
+@@ -230,6 +230,9 @@
+ 	"rootfs0_nand_address=0x1780000\0" \
+ 	"rootfs1_nand_address=0x74c0000\0" \
+ 	"rootfs_size=0x5d40000\0" \
++	"configfs_image=config.ubi\0" \
++	"configfs_nand_address=0xd200000\0" \
++	"configfs_size=0xa00000\0" \
+ 	"nandboot=echo Booting from NAND... && " \
+ 			 "if test $image_flag = 0; then " \
+ 				 "echo image_0 && " \
+@@ -287,6 +290,10 @@
+ 		   "echo Updating 1 ${rootfs_image}... && " \
+ 		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${rootfs_image} && " \
+ 		   "nand write.jffs2 ${boot_copy_ram_address} ${rootfs1_nand_address} $filesize && " \
++		    "echo " \
++	           "echo Updating ${configfs_image}... && " \
++	           "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${configfs_image}  && " \
++	           "nand write ${boot_copy_ram_address} ${configfs_nand_address} ${configfs_size} && " \
+ 		   "echo \0"
+ #endif
+ 

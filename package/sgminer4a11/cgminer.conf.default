@@ -1,0 +1,13 @@
+{
+"pools" : [
+	{
+		"url" : "stratum+tcp://dcr.backyard-pool.com:3252",
+		"user" : "DsW2vfdzYP1pESaW4j2UcJdHwd4hJqZTXVv",
+		"pass" : "worker"
+	}
+],
+
+"api-listen" : true,
+"api-port" : "4028",
+"api-allow" : "R:0/0,W:127.0.0.1"
+}

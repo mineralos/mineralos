@@ -1,0 +1,22 @@
+{
+"proxy" :  [
+	{
+		"url" : "ckpool.org:3333",
+		"auth" : "user",
+		"pass" : "pass"
+	},
+	{
+		"url" : "backup.ckpool.org:3333",
+		"auth" : "user",
+		"pass" : "pass"
+	}
+],
+"update_interval" : 30,
+"serverurl" : [
+	"0.0.0.0:3333"
+	],
+"mindiff" : 1,
+"startdiff" : 2048,
+"maxdiff" : 0,
+"logdir" : "/tmp/ckpoollogs"
+}

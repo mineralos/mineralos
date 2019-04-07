@@ -1,0 +1,15 @@
+[Unit]
+Description=Reload network after config is mounted
+Conflicts=shutdown.target
+Requires=systemd-networkd.service config.mount
+After=systemd-networkd.service config.mount
+
+[Service]
+Type=oneshot
+ExecStartPre=-/bin/mkdir -p /config/network
+ExecStartPre=/bin/sh -c "if [ ! -s /config/network/25-wired.network ]; then cp -f /etc/systemd/network/dhcp.network /config/network/25-wired.network; fi"
+ExecStart=/bin/systemctl restart systemd-networkd.service
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

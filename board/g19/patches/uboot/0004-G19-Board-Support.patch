@@ -1,0 +1,46 @@
+diff --git a/drivers/fpga/fpga.c b/drivers/fpga/fpga.c
+index e98b9bd..13d4344 100644
+--- a/drivers/fpga/fpga.c
++++ b/drivers/fpga/fpga.c
+@@ -236,6 +236,31 @@ int fpga_loads(int devnum, const void *buf, size_t size,
+ }
+ #endif
+ 
++static void set_fan_speed(int fan_id, int duty)
++{
++	#define PWM_FREQ				(20000)
++	#define PERIPHERAL_BASE_ADDR			0x43C00000
++	#define PERIPHERAL_S00_AXI_SLV_REG16_OFFSET 	64
++	#define PERIPHERAL_S00_AXI_SLV_REG17_OFFSET 	68
++	#define PERIPHERAL_S00_AXI_SLV_REG2_OFFSET 	8
++	#define PERIPHERAL_S00_AXI_SLV_REG1_OFFSET      4
++
++	int duty_driver = 0;
++	uint32_t reg_val;
++	duty_driver = PWM_FREQ / 100 * duty;
++
++	reg_val = *(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG1_OFFSET);
++	if(reg_val != 3)
++	{
++		*(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG1_OFFSET) = 3;
++	}
++	*(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG16_OFFSET + fan_id*8) = PWM_FREQ;	
++	*(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG17_OFFSET + fan_id*8) = duty_driver;
++	reg_val = *(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG2_OFFSET);
++	*(volatile uint32_t*)(PERIPHERAL_BASE_ADDR + PERIPHERAL_S00_AXI_SLV_REG2_OFFSET) = (reg_val & (~(0x1 << fan_id))) | (0x1 << fan_id);
++	return;
++}
++
+ /*
+  * Generic multiplexing code
+  */
+@@ -274,6 +299,9 @@ int fpga_load(int devnum, const void *buf, size_t bsize, bitstream_type bstype)
+ 			       __func__, desc->devtype);
+ 		}
+ 	}
++	/**set fan speed to 50% after fpga loaded*/
++	set_fan_speed(0, 50);
++	set_fan_speed(1, 50);
+ 
+ 	return ret_val;
+ }

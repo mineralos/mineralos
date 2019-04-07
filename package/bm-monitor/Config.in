@@ -1,0 +1,5 @@
+config BR2_PACKAGE_BM_MONITOR
+	bool "bm-monitor"
+	depends on BR2_arm
+	help
+	  Antminer monitor daemon

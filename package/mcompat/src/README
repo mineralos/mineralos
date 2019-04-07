@@ -1,0 +1,15 @@
+自检,review checklist:
+1. 出错处理
+2. 资源配平
+3. 宏名/变量名/函数名
+
+芯动自编挖矿程序:
+1. 重构代码
+   a. 完善vid驱动/实现驱动适配层/实现矿机封装双通
+   b. show_log调试
+   d. 海量jobs算法验证
+   e. 提取pwm驱动/风扇控制模块
+   f. json解析
+   g. 多线程调度库
+2. 轻量级cgminer/sgminer/cpuminer的代码
+

@@ -1,0 +1,226 @@
+software =
+{
+        version = "0.1.0";
+
+        hardware-compatibility = [ "@hwversion" ];
+
+        /* differentiate running image modes/sets */
+        bm_xil_1g = {
+                stable:
+                {
+                        main:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree1g.dtb";
+                                        device = "mtd2";
+                                        type = "flash";
+                                        sha256 = "@devicetree1g.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd4";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd6";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd8";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "hwrevision";
+                                        value = "bm_xil_1g:s9.bm_xil_1g";
+                                },
+                                {
+                                        name = "image_flag";
+                                        value = "0";
+                                },
+                                {
+                                        name = "version_0";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                        alt:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree1g.dtb";
+                                        device = "mtd3";
+                                        type = "flash";
+                                        sha256 = "@devicetree1g.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd5";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd7";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd9";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "hwrevision";
+                                        value = "bm_xil_1g:s9.bm_xil_1g";
+                                },
+                                {
+                                        name = "image_flag";
+                                        value = "1";
+                                },
+                                {
+                                        name = "version_1";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                };
+        };
+        bm_xil_512m = {
+                stable:
+                {
+                        main:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree512m.dtb";
+                                        device = "mtd2";
+                                        type = "flash";
+                                        sha256 = "@devicetree512m.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd4";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd6";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd8";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "hwrevision";
+                                        value = "bm_xil_512m:s9.bm_xil_512m";
+                                },
+                                {
+                                        name = "image_flag";
+                                        value = "0";
+                                },
+                                {
+                                        name = "version_0";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                        alt:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree512m.dtb";
+                                        device = "mtd3";
+                                        type = "flash";
+                                        sha256 = "@devicetree512m.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd5";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd7";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd9";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "hwrevision";
+                                        value = "bm_xil_512m:s9.bm_xil_512m";
+                                },
+                                {
+                                        name = "image_flag";
+                                        value = "1";
+                                },
+                                {
+                                        name = "version_1";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                };
+        };
+}

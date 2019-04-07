@@ -1,0 +1,27 @@
+config BR2_PACKAGE_CGMINER
+	bool "cgminer"
+	select BR2_PACKAGE_JANSSON
+	help
+	  This is a multi-threaded multi-pool FPGA and ASIC miner for bitcoin.
+
+	  https://github.com/ckolivas/cgminer
+
+if BR2_PACKAGE_CGMINER
+
+choice
+	prompt "cgminer version"
+	default BR2_PACKAGE_CGMINER_T1
+	help
+	  Select the cgminer version
+
+config BR2_PACKAGE_CGMINER_T1
+	bool "cgminer t1"
+
+config BR2_PACKAGE_CGMINER_T2
+	bool "cgminer t2"
+
+config BR2_PACKAGE_CGMINER_S9
+	bool "cgminer s9"
+
+endchoice
+endif

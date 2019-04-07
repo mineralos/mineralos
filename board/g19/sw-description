@@ -1,0 +1,109 @@
+software =
+{
+        version = "0.1.0";
+
+        hardware-compatibility = [ "@hwversion" ];
+
+        /* differentiate running image modes/sets */
+        g19 = {
+                stable:
+                {
+                        main:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree.dtb";
+                                        device = "mtd2";
+                                        type = "flash";
+                                        sha256 = "@devicetree.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd4";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd6";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd8";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "image_flag";
+                                        value = "0";
+                                },
+                                {
+                                        name = "version_0";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                        alt:
+                        {
+                                images: (
+                                {
+                                        name = "bootloader";
+                                        version = "2017.01";
+                                        filename = "BOOT.bin";
+                                        device = "mtd0";
+                                        type = "flash";
+                                        sha256 = "@BOOT.bin";
+                                },
+                                {
+                                        filename = "devicetree.dtb";
+                                        device = "mtd3";
+                                        type = "flash";
+                                        sha256 = "@devicetree.dtb";
+                                },
+                                {
+                                        filename = "system.bit";
+                                        device = "mtd5";
+                                        type = "flash";
+                                        sha256 = "@system.bit";
+                                },
+                                {
+                                        filename = "uImage";
+                                        device = "mtd7";
+                                        type = "flash";
+                                        sha256 = "@uImage";
+                                },
+                                {
+                                        filename = "rootfs.ubi";
+                                        device = "mtd9";
+                                        type = "flash";
+                                        sha256 = "@rootfs.ubi";
+                                }
+                                );
+
+                                uboot: (
+                                {
+                                        name = "image_flag";
+                                        value = "1";
+                                },
+                                {
+                                        name = "version_1";
+                                        value = "@version";
+                                }
+                                );
+                        };
+                };
+        };
+}

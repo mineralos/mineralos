@@ -1,0 +1,6 @@
+config BR2_PACKAGE_DM_MONITOR
+	bool "dm-monitor"
+	depends on BR2_arm
+	select BR2_PACKAGE_MCOMPAT
+	help
+	  Dragonmint monitor daemon

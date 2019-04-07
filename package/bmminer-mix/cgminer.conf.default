@@ -1,0 +1,19 @@
+{
+"pools" : [
+	{
+		"url" : "stratum+tcp://pool.ckpool.org:3333",
+		"user" : "36JMs8rogpizjkkp6eeKMmm3SLbSNo5H9V.0",
+		"pass" : "x"
+	},
+	{
+		"url" : "stratum+tcp://dbg.stratum.myrig.com:3333",
+		"user" : "dragonpool.worker1",
+		"pass" : "x"
+	}
+],
+
+"api-listen" : true,
+"api-port" : "4028",
+"api-allow" : "R:0/0,W:127.0.0.1",
+"multi-version" : "4"
+}

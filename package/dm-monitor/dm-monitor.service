@@ -1,0 +1,13 @@
+[Unit]
+Description=dm-monitor
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+PrivateTmp=no
+ExecStart=/bin/dm-monitor 1
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

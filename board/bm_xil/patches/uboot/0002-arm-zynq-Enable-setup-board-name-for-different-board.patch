@@ -1,0 +1,25 @@
+From 49743d9193c295eec897366ada3bed620e49fd49 Mon Sep 17 00:00:00 2001
+From: Michal Simek <michal.simek@xilinx.com>
+Date: Sun, 4 Mar 2018 16:15:15 +0100
+Subject: [PATCH 1/1] arm: zynq: Enable setup board name for different boards
+
+There is no need to use zynq name as SYS_BOARD for all boards.
+The patch is adding an option to change it.
+
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index 601781c..28904cf 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -36,6 +36,7 @@ config ZYNQ_DDRC_INIT
+ 	  want to skip ddr init and this option is useful for it.
+ 
+ config SYS_BOARD
++	string "Board name"
+ 	default "zynq"
+ 
+ config SYS_VENDOR
+-- 
+2.7.4
+

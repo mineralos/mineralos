@@ -1,0 +1,10 @@
+config BR2_PACKAGE_HOST_ZYNQ_MKBOOTIMAGE
+	bool "host zynq-mkbootimage"
+	depends on BR2_arm
+	help
+	  This is an open-source replacement for the Xilinx bootgen application.
+	  It parses a .bif file and creates a Zynq boot image in .bin format.
+	  Currently it supports creating boot image containing fsbl, bitstream,
+	  u-boot, and linux related binary files.
+
+	  https://github.com/antmicro/zynq-mkbootimage

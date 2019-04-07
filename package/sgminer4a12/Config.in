@@ -1,0 +1,28 @@
+config BR2_PACKAGE_SGMINER4A12
+	bool "sgminer4a12"
+	depends on !BR2_PACKAGE_CGMINER
+	depends on !BR2_PACKAGE_CGMINER4T4
+	depends on !BR2_PACKAGE_SGMINER4A11
+	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_MCOMPAT
+	help
+	  This is a multi-threaded multi-pool FPGA and ASIC miner for sia.
+
+	  https://github.com/ckolivas/sgminer4a12
+
+if BR2_PACKAGE_SGMINER4A12
+
+choice
+	prompt "sgminer version"
+	default BR2_PACKAGE_SGMINER_B52
+	help
+	  Select the sgminer version
+
+config BR2_PACKAGE_SGMINER_B52
+	bool "sgminer b52"
+
+config BR2_PACKAGE_SGMINER_S11
+	bool "sgminer s11"
+
+endchoice
+endif

@@ -1,0 +1,12 @@
+[Unit]
+Description=dm_chip_type
+Before=cgminer.service
+Requires=config.mount
+
+[Service]
+Type=oneshot
+ExecStart=/bin/dm_chip_type 4 0 8 80 /tmp/type /tmp/chip_nums /tmp/hwver /tmp/dev_type
+
+[Install]
+WantedBy=multi-user.target
+

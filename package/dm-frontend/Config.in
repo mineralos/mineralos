@@ -1,0 +1,5 @@
+config BR2_PACKAGE_DM_FRONTEND
+	bool "dm-frontend"
+	select BR2_PACKAGE_DM_BACKEND
+	help
+	  dragonmint frontend js app

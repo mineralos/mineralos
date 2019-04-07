@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CGMINER4T4
+	bool "cgminer for monroe"
+	depends on !BR2_PACKAGE_CGMINER
+	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_MCOMPAT
+	help
+	  This is a multi-threaded multi-pool FPGA and ASIC miner for bitcoin.
+
+	  https://github.com/ckolivas/cgminer

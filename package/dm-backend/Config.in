@@ -1,0 +1,4 @@
+config BR2_PACKAGE_DM_BACKEND
+	bool "dm-backend"
+	help
+	  dragonmint backend php app

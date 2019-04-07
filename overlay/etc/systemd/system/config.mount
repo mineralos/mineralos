@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount config partition
+Requires=config-attach.service
+After=config-attach.service
+OnFailure=config-format.service
+[Mount]
+What=ubi1:config
+Where=/config
+Type=ubifs

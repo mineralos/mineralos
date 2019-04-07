@@ -1,0 +1,23 @@
+{
+"pools" : [
+	{
+		"url"  : "stratum+tcp://dash-bj.ss.poolin.com:25",
+		"user" : "inno.001",
+		"pass" : "x"
+	},
+	{
+		"url"  : "stratum+tcp://dash-bj.ss.poolin.com:443",
+		"user" : "inno.001",
+		"pass" : "x"
+	},
+	{
+		"url"  : "stratum+tcp://dash-bj.ss.poolin.com:1800",
+		"user" : "inno.001",
+		"pass" : "x"
+	}
+],
+
+"api-listen" : true,
+"api-port" : "4028",
+"api-allow" : "R:0/0,W:127.0.0.1"
+}

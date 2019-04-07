@@ -1,0 +1,4 @@
+config BR2_PACKAGE_WG_DIAG
+	bool "wg-diag"
+	help
+	  remote diagnostics

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_IM_BACKEND
+	bool "im-backend"
+	help
+	  inno backend php app

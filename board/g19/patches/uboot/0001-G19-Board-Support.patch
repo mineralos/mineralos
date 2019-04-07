@@ -1,0 +1,259 @@
+diff --git a/include/configs/zynq-common.h b/include/configs/zynq-common.h
+index a38ca05..58bf63a 100644
+--- a/include/configs/zynq-common.h
++++ b/include/configs/zynq-common.h
+@@ -191,119 +191,126 @@
+ 
+ /* cc108 requires to be 0xF00000 to have boot.bin with bitstream included */
+ # ifndef CONFIG_ENV_OFFSET
+-#  define CONFIG_ENV_OFFSET		0xE0000
++#  define CONFIG_ENV_OFFSET		0x400000
+ # endif
+ #endif
+ 
+-/* enable preboot to be loaded before CONFIG_BOOTDELAY */
+-#define CONFIG_PREBOOT
++#define CONFIG_ENV_OFFSET_REDUND        (CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)
+ 
+ /* Default environment */
+ #ifndef CONFIG_EXTRA_ENV_SETTINGS
+-#define CONFIG_EXTRA_ENV_SETTINGS	\
+-	"ethaddr=00:0a:35:00:01:22\0"	\
+-	"kernel_image=uImage\0"	\
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"console=ttyPS0,115200\0" \
++	"mtdids=nand0=nand0\0" \
++	"mtdparts=mtdparts=nand0:0x400000@0x0(bootloader),0x400000@0x80000(env),0x480000@0x80000(dtb-main),0x500000@0x80000(dtb-alt),0x580000@0x400000(fpga-main),0x980000@0x400000(fpga-alt),0xd80000@0x500000(kernel-main),0x1280000@0x500000(kernel-alt),0x1780000@0x5d40000(rootfs-main),0x74c0000@0x5d40000(rootfs-alt),0xd200000@0xa00000(config)\0" \
++	"mmc_fat_num=0\0" \
++	"boot_copy_ram_address=0x2000000\0" \
++	"boot_image=BOOT.bin\0" \
++	"boot_nand_address=0x0\0" \
++	"boot_size=0x400000\0" \
++	"env_nand_address=0x400000\0" \
++	"env_size=0x80000\0" \
++	"devicetree_image=devicetree.dtb\0" \
++	"devicetree_load_address=0x2000000\0" \
++	"devicetree0_nand_address=0x480000\0" \
++	"devicetree1_nand_address=0x500000\0" \
++	"devicetree_size=0x80000\0" \
++	"fpga_image=system.bit\0" \
++	"fpga_load_address=0x400000\0" \
++	"fpga0_nand_address=0x580000\0" \
++	"fpga1_nand_address=0x980000\0" \
++	"fpga_size=0x400000\0" \
++	"kernel_image=uImage\0" \
+ 	"kernel_load_address=0x2080000\0" \
+-	"ramdisk_image=uramdisk.image.gz\0"	\
+-	"ramdisk_load_address=0x4000000\0"	\
+-	"devicetree_image=devicetree.dtb\0"	\
+-	"devicetree_load_address=0x2000000\0"	\
+-	"bitstream_image=system.bit.bin\0"	\
+-	"boot_image=BOOT.bin\0"	\
+-	"loadbit_addr=0x100000\0"	\
+-	"loadbootenv_addr=0x2000000\0" \
+-	"kernel_size=0x500000\0"	\
+-	"devicetree_size=0x20000\0"	\
+-	"ramdisk_size=0x5E0000\0"	\
+-	"boot_size=0xF00000\0"	\
+-	"fdt_high=0x20000000\0"	\
+-	"initrd_high=0x20000000\0"	\
++	"kernel0_nand_address=0xd80000\0" \
++	"kernel1_nand_address=0x1280000\0" \
++	"kernel_size=0x500000\0" \
++	"image_flag=0\0" \
++	"rootfs_image=rootfs.ubi\0" \
++	"rootfs0_nand_address=0x1780000\0" \
++	"rootfs1_nand_address=0x74c0000\0" \
++	"rootfs_size=0x5d40000\0" \
++	"nandboot=echo Booting from NAND... && " \
++			 "if test $image_flag = 0; then " \
++				 "echo image_0 && " \
++				 "nand read ${fpga_load_address} ${fpga0_nand_address} ${fpga_size} && fpga loadb 0 ${fpga_load_address} ${fpga_size} && " \
++				 "setenv bootargs console=ttyPS0,115200 noinitrd root=ubi0:rootfs ro ubi.mtd=8 earlyprintk rootfstype=ubifs rootwait && saveenv && " \
++				 "nand read ${devicetree_load_address} ${devicetree0_nand_address} ${devicetree_size} && " \
++				 "nand read ${kernel_load_address} ${kernel0_nand_address} ${kernel_size} && " \
++				 "bootm ${kernel_load_address} - ${devicetree_load_address}; " \
++			 "fi; " \
++			 "if test $image_flag = 1; then " \
++				 "echo image_1 && " \
++				 "nand read ${fpga_load_address} ${fpga1_nand_address} ${fpga_size} && fpga loadb 0 ${fpga_load_address} ${fpga_size} && " \
++				 "setenv bootargs console=ttyPS0,115200 noinitrd root=ubi0:rootfs ro ubi.mtd=9 earlyprintk rootfstype=ubifs rootwait && saveenv && " \
++				 "nand read ${devicetree_load_address} ${devicetree1_nand_address} ${devicetree_size} && " \
++				 "nand read ${kernel_load_address} ${kernel1_nand_address} ${kernel_size} && " \
++				 "bootm ${kernel_load_address} - ${devicetree_load_address}; " \
++			 "fi\0" \
+ 	"bootenv=uEnv.txt\0" \
+-	"loadbootenv=load mmc 0 ${loadbootenv_addr} ${bootenv}\0" \
+-	"importbootenv=echo Importing environment from SD ...; " \
+-		"env import -t ${loadbootenv_addr} $filesize\0" \
+-	"sd_uEnvtxt_existence_test=test -e mmc 0 /uEnv.txt\0" \
+-	"preboot=if test $modeboot = sdboot && env run sd_uEnvtxt_existence_test; " \
+-			"then if env run loadbootenv; " \
+-				"then env run importbootenv; " \
++	"sdboot=echo Booting from SdCard... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${bootenv} && " \
++		   "env import -t ${boot_copy_ram_address} $filesize && " \
++		   "fatload mmc ${mmc_fat_num} ${fpga_load_address} ${fpga_image} && " \
++		   "fpga loadb 0 ${fpga_load_address} ${fpga_size} && " \
++		   "fatload mmc ${mmc_fat_num} ${devicetree_load_address} ${devicetree_image} && " \
++		   "fatload mmc ${mmc_fat_num} ${kernel_load_address} ${kernel_image} && " \
++		   "bootm ${kernel_load_address} - ${devicetree_load_address};\0" \
++	"update=echo erase all nand... && " \
++		   "nand erase.chip && " \
++		   "echo Updating ${boot_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${boot_image} && " \
++		   "nand write ${boot_copy_ram_address} ${boot_nand_address} ${boot_size} && " \
++		   "echo " \
++		   "echo Saving env... && " \
++		   "saveenv && " \
++		   "echo " \
++		   "echo Updating ${devicetree_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${devicetree_image} && " \
++		   "nand write ${boot_copy_ram_address} ${devicetree0_nand_address} ${devicetree_size} && " \
++		   "nand write ${boot_copy_ram_address} ${devicetree1_nand_address} ${devicetree_size} && " \
++		   "echo " \
++		   "echo Updating ${fpga_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${fpga_image} && " \
++		   "nand write ${boot_copy_ram_address} ${fpga0_nand_address} ${fpga_size} && " \
++		   "nand write ${boot_copy_ram_address} ${fpga1_nand_address} ${fpga_size} && " \
++		   "echo " \
++		   "echo Updating ${kernel_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${kernel_image} && " \
++		   "nand write ${boot_copy_ram_address} ${kernel0_nand_address} ${kernel_size} && " \
++		   "nand write ${boot_copy_ram_address} ${kernel1_nand_address} ${kernel_size} && " \
++		   "echo " \
++		   "echo Updating 0 ${rootfs_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${rootfs_image} && " \
++		   "nand write.jffs2 ${boot_copy_ram_address} ${rootfs0_nand_address} $filesize && " \
++		   "echo " \
++		   "echo Updating 1 ${rootfs_image}... && " \
++		   "fatload mmc ${mmc_fat_num} ${boot_copy_ram_address} ${rootfs_image} && " \
++		   "nand write.jffs2 ${boot_copy_ram_address} ${rootfs1_nand_address} $filesize && " \
++		   "echo \0"
++#endif
++
++/* Default environment */
++#define CONFIG_IPADDR	10.10.70.102
++#define CONFIG_SERVERIP	10.10.70.101
++
++/* Migrate environment */
++#define CONFIG_PREBOOT \
++	"nand read 0x640000 0x400000 0x20000; " \
++	"crc32 0x640004 0x1fffc 0x660000; " \
++	"if cmp.b 0x640000 0x660003 1; then " \
++		"if cmp.b 0x640001 0x660002 1; then " \
++			"if cmp.b 0x640002 0x660001 1; then " \
++				"if cmp.b 0x640003 0x660000 1; then " \
++					"env import -d -b 0x640004 0x1fffc; " \
++				"fi; " \
+ 			"fi; " \
+-		"fi; \0" \
+-	"mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM.. && " \
+-		"mmcinfo && " \
+-		"load mmc 0 ${loadbit_addr} ${bitstream_image} && " \
+-		"fpga load 0 ${loadbit_addr} ${filesize}\0" \
+-	"norboot=echo Copying Linux from NOR flash to RAM... && " \
+-		"cp.b 0xE2100000 ${kernel_load_address} ${kernel_size} && " \
+-		"cp.b 0xE2600000 ${devicetree_load_address} ${devicetree_size} && " \
+-		"echo Copying ramdisk... && " \
+-		"cp.b 0xE2620000 ${ramdisk_load_address} ${ramdisk_size} && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"qspiboot=echo Copying Linux from QSPI flash to RAM... && " \
+-		"sf probe 0 0 0 && " \
+-		"sf read ${kernel_load_address} 0x100000 ${kernel_size} && " \
+-		"sf read ${devicetree_load_address} 0x600000 ${devicetree_size} && " \
+-		"echo Copying ramdisk... && " \
+-		"sf read ${ramdisk_load_address} 0x620000 ${ramdisk_size} && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"uenvboot=" \
+-		"if run loadbootenv; then " \
+-			"echo Loaded environment from ${bootenv}; " \
+-			"run importbootenv; " \
+ 		"fi; " \
+-		"if test -n $uenvcmd; then " \
+-			"echo Running uenvcmd ...; " \
+-			"run uenvcmd; " \
+-		"fi\0" \
+-	"sdboot=if mmcinfo; then " \
+-			"run uenvboot; " \
+-			"echo Copying Linux from SD to RAM... && " \
+-			"load mmc 0 ${kernel_load_address} ${kernel_image} && " \
+-			"load mmc 0 ${devicetree_load_address} ${devicetree_image} && " \
+-			"load mmc 0 ${ramdisk_load_address} ${ramdisk_image} && " \
+-			"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}; " \
+-		"fi\0" \
+-	"usbboot=if usb start; then " \
+-			"run uenvboot; " \
+-			"echo Copying Linux from USB to RAM... && " \
+-			"load usb 0 ${kernel_load_address} ${kernel_image} && " \
+-			"load usb 0 ${devicetree_load_address} ${devicetree_image} && " \
+-			"load usb 0 ${ramdisk_load_address} ${ramdisk_image} && " \
+-			"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}; " \
+-		"fi\0" \
+-	"nandboot=echo Copying Linux from NAND flash to RAM... && " \
+-		"nand read ${kernel_load_address} 0x100000 ${kernel_size} && " \
+-		"nand read ${devicetree_load_address} 0x600000 ${devicetree_size} && " \
+-		"echo Copying ramdisk... && " \
+-		"nand read ${ramdisk_load_address} 0x620000 ${ramdisk_size} && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"jtagboot=echo TFTPing Linux to RAM... && " \
+-		"tftpboot ${kernel_load_address} ${kernel_image} && " \
+-		"tftpboot ${devicetree_load_address} ${devicetree_image} && " \
+-		"tftpboot ${ramdisk_load_address} ${ramdisk_image} && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"rsa_norboot=echo Copying Image from NOR flash to RAM... && " \
+-		"cp.b 0xE2100000 0x100000 ${boot_size} && " \
+-		"zynqrsa 0x100000 && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"rsa_nandboot=echo Copying Image from NAND flash to RAM... && " \
+-		"nand read 0x100000 0x0 ${boot_size} && " \
+-		"zynqrsa 0x100000 && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"rsa_qspiboot=echo Copying Image from QSPI flash to RAM... && " \
+-		"sf probe 0 0 0 && " \
+-		"sf read 0x100000 0x0 ${boot_size} && " \
+-		"zynqrsa 0x100000 && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"rsa_sdboot=echo Copying Image from SD to RAM... && " \
+-		"load mmc 0 0x100000 ${boot_image} && " \
+-		"zynqrsa 0x100000 && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-	"rsa_jtagboot=echo TFTPing Image to RAM... && " \
+-		"tftpboot 0x100000 ${boot_image} && " \
+-		"zynqrsa 0x100000 && " \
+-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+-		DFU_ALT_INFO
+-#endif
++	"fi; " \
++	"setenv preboot; " \
++	"saveenv; " \
++	"saveenv;"
++
+ 
+ /* default boot is according to the bootmode switch settings */
+ #if defined(CONFIG_CMD_ZYNQ_RSA)
+diff --git a/include/configs/zynq_zc70x.h b/include/configs/zynq_zc70x.h
+index fc46fec..2ba5a16 100644
+--- a/include/configs/zynq_zc70x.h
++++ b/include/configs/zynq_zc70x.h
+@@ -13,6 +13,20 @@
+ #define CONFIG_ZYNQ_I2C0
+ #define CONFIG_ZYNQ_EEPROM
+ 
++#define CONFIG_CMD_UBI
++#define CONFIG_RBTREE
++#define CONFIG_CMD_UBIFS
++#define CONFIG_LZO
++
++#define CONFIG_CMD_MTDPARTS
++#define CONFIG_MTD_DEVICE
++#define CONFIG_MTD_PARTITIONS
++
++#define CONFIG_SYS_MAX_FLASH_BANKS 1
++
++#define CONFIG_MTD_UBI_WL_THRESHOLD 4096
++#define CONFIG_MTD_UBI_BEB_LIMIT 0
++
+ #include <configs/zynq-common.h>
+ 
+ #endif /* __CONFIG_ZYNQ_ZC70X_H */

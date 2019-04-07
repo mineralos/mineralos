@@ -1,0 +1,16 @@
+[Unit]
+Description=Ckpool
+After=network.target config.mount
+Requires=config.mount
+ConditionPathExists=/config/ckpool.conf
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+PrivateTmp=no
+ExecStart=/bin/ckpool -c /config/ckpool.conf -A -p -q
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

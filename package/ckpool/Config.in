@@ -1,0 +1,6 @@
+config BR2_PACKAGE_CKPOOL
+	bool "ckpool"
+	help
+	  Ultra low overhead massively scalable multi-process, multi-threaded modular bitcoin mining pool, proxy, passthrough, library and database interface in c for Linux.
+
+	  https://bitbucket.org/ckolivas/ckpool

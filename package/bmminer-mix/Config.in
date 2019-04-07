@@ -1,0 +1,27 @@
+config BR2_PACKAGE_BMMINER_MIX
+	bool "bmminer-mix"
+	depends on !BR2_PACKAGE_CGMINER
+	depends on !BR2_PACKAGE_CGMINER4T4
+	depends on !BR2_PACKAGE_SGMINER4A11
+	depends on !BR2_PACKAGE_SGMINER4A12
+	depends on !BR2_PACKAGE_SGMINER4A7
+	depends on !BR2_PACKAGE_CGMINER4A6
+	select BR2_PACKAGE_JANSSON
+	help
+	  This is a multi-threaded multi-pool FPGA and ASIC miner for sia.
+
+	  https://github.com/ckolivas/cgminer
+
+if BR2_PACKAGE_BMMINER_MIX
+
+choice
+	prompt "bmminer version"
+	default BR2_PACKAGE_BMMINER_MIX_S9
+	help
+	  Select the bmminer version
+
+config BR2_PACKAGE_BMMINER_MIX_S9
+	bool "bmminer s9"
+
+endchoice
+endif

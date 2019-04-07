@@ -1,0 +1,13 @@
+{
+"pools" : [
+	{
+		"url" : "stratum+tcp://asia.siamining.com:3333",
+		"user" : "25865daf640696361b432bd517b812270d8459af48f13876108354ee7e028e0e15c13ab5030c",
+		"pass" : "x"
+	}
+],
+
+"api-listen" : true,
+"api-port" : "4028",
+"api-allow" : "R:0/0,W:127.0.0.1"
+}

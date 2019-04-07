@@ -1,0 +1,23 @@
+[Unit]
+Description=wg-diag
+After=network.target config.mount
+Requires=config.mount
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+PrivateTmp=no
+ExecStartPre=/bin/sh -c "if [ ! -s /config/wg0.key ]; then wg genkey > /config/wg0.key; fi"
+ExecStartPre=/sbin/ip link add dev wg0 type wireguard
+ExecStartPre=/bin/sh -c "/bin/systemctl set-environment WG_PUBKEY=$(wg pubkey < /config/wg0.key)"
+ExecStartPre=/bin/sh -c "/sbin/ip address add dev wg0 $(curl --data-urlencode "key=${WG_PUBKEY}" ${WG_IP_CONFIG_ENDPOINT}/api/v1/diag/ip)"
+ExecStartPre=/bin/wg set wg0 private-key /config/wg0.key peer ${WG_SERVER_KEY} persistent-keepalive 25 allowed-ips 0.0.0.0/0 endpoint ${WG_SERVER_ENDPOINT}
+ExecStart=/sbin/ip link set up dev wg0
+ExecStopPost=/sbin/ip link set down dev wg0
+ExecStopPost=/sbin/ip link delete dev wg0
+Restart=on-failure
+RestartSec=30
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

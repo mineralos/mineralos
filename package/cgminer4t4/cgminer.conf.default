@@ -1,0 +1,13 @@
+{
+"pools" : [
+	{
+		"url" : "stratum+tcp://xmc-bj.ss.poolin.com:1800",
+		"user" : "aged.001",
+		"pass" : "123"
+	}
+],
+
+"api-listen" : true,
+"api-port" : "4028",
+"api-allow" : "R:0/0,W:127.0.0.1"
+}

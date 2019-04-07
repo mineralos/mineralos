@@ -1,0 +1,4 @@
+config BR2_PACKAGE_PYTHON_G19_GPIO
+	bool "python-g19-gpio"
+	help
+	  G19 GPIO Library.

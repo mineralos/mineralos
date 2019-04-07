@@ -1,0 +1,27 @@
+config BR2_PACKAGE_SGMINER4A11
+	bool "sgminer4a11"
+	depends on !BR2_PACKAGE_CGMINER
+	depends on !BR2_PACKAGE_CGMINER4T4
+	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_MCOMPAT
+	help
+	  This is a multi-threaded multi-pool FPGA and ASIC miner for decred.
+
+	  https://github.com/ckolivas/sgminer4a11
+
+if BR2_PACKAGE_SGMINER4A11
+
+choice
+	prompt "sgminer version"
+	default BR2_PACKAGE_SGMINER_B29
+	help
+	  Select the sgminer version
+
+config BR2_PACKAGE_SGMINER_B29
+	bool "sgminer b29"
+
+config BR2_PACKAGE_SGMINER_D9
+	bool "sgminer d9"
+
+endchoice
+endif

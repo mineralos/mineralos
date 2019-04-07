@@ -1,0 +1,780 @@
+#ifndef _DRV_HUB_H_
+#define _DRV_HUB_H_
+
+#include "mcompat_fan.h"
+
+#define PAGE_SIZE   ((size_t)getpagesize())*2
+#define PAGE_MASK   ((uint32_t) (long)~(PAGE_SIZE - 1))
+
+
+/* Definition for CPU ID */
+#define XPAR_CPU_ID 0
+
+/* Definitions for peripheral PS7_CORTEXA9_0 */
+#define XPAR_PS7_CORTEXA9_0_CPU_CLK_FREQ_HZ 666666687
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_CORTEXA9_0 */
+#define XPAR_CPU_CORTEXA9_0_CPU_CLK_FREQ_HZ 666666687
+
+
+/******************************************************************/
+
+#define STDIN_BASEADDRESS 0xE0001000
+#define STDOUT_BASEADDRESS 0xE0001000
+
+/******************************************************************/
+
+
+/* Definitions for peripheral PS7_DDR_0 */
+#define XPAR_PS7_DDR_0_S_AXI_BASEADDR 0x00100000
+#define XPAR_PS7_DDR_0_S_AXI_HIGHADDR 0x1FFFFFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver DEVCFG */
+#define XPAR_XDCFG_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_DEV_CFG_0 */
+#define XPAR_PS7_DEV_CFG_0_DEVICE_ID 0
+#define XPAR_PS7_DEV_CFG_0_BASEADDR 0xF8007000
+#define XPAR_PS7_DEV_CFG_0_HIGHADDR 0xF80070FF
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_DEV_CFG_0 */
+#define XPAR_XDCFG_0_DEVICE_ID XPAR_PS7_DEV_CFG_0_DEVICE_ID
+#define XPAR_XDCFG_0_BASEADDR 0xF8007000
+#define XPAR_XDCFG_0_HIGHADDR 0xF80070FF
+
+
+/******************************************************************/
+
+/* Definitions for driver DMAPS */
+#define XPAR_XDMAPS_NUM_INSTANCES 2
+
+/* Definitions for peripheral PS7_DMA_NS */
+#define XPAR_PS7_DMA_NS_DEVICE_ID 0
+#define XPAR_PS7_DMA_NS_BASEADDR 0xF8004000
+#define XPAR_PS7_DMA_NS_HIGHADDR 0xF8004FFF
+
+
+/* Definitions for peripheral PS7_DMA_S */
+#define XPAR_PS7_DMA_S_DEVICE_ID 1
+#define XPAR_PS7_DMA_S_BASEADDR 0xF8003000
+#define XPAR_PS7_DMA_S_HIGHADDR 0xF8003FFF
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_DMA_NS */
+#define XPAR_XDMAPS_0_DEVICE_ID XPAR_PS7_DMA_NS_DEVICE_ID
+#define XPAR_XDMAPS_0_BASEADDR 0xF8004000
+#define XPAR_XDMAPS_0_HIGHADDR 0xF8004FFF
+
+/* Canonical definitions for peripheral PS7_DMA_S */
+#define XPAR_XDMAPS_1_DEVICE_ID XPAR_PS7_DMA_S_DEVICE_ID
+#define XPAR_XDMAPS_1_BASEADDR 0xF8003000
+#define XPAR_XDMAPS_1_HIGHADDR 0xF8003FFF
+
+
+/******************************************************************/
+
+/* Definitions for driver EMACPS */
+#define XPAR_XEMACPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_ETHERNET_0 */
+#define XPAR_PS7_ETHERNET_0_DEVICE_ID 0
+#define XPAR_PS7_ETHERNET_0_BASEADDR 0xE000B000
+#define XPAR_PS7_ETHERNET_0_HIGHADDR 0xE000BFFF
+#define XPAR_PS7_ETHERNET_0_ENET_CLK_FREQ_HZ 125000000
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_1000MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_1000MBPS_DIV1 1
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_100MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_100MBPS_DIV1 5
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_10MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_0_ENET_SLCR_10MBPS_DIV1 50
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_ETHERNET_0 */
+#define XPAR_XEMACPS_0_DEVICE_ID XPAR_PS7_ETHERNET_0_DEVICE_ID
+#define XPAR_XEMACPS_0_BASEADDR 0xE000B000
+#define XPAR_XEMACPS_0_HIGHADDR 0xE000BFFF
+#define XPAR_XEMACPS_0_ENET_CLK_FREQ_HZ 125000000
+#define XPAR_XEMACPS_0_ENET_SLCR_1000Mbps_DIV0 1
+#define XPAR_XEMACPS_0_ENET_SLCR_1000Mbps_DIV1 1
+#define XPAR_XEMACPS_0_ENET_SLCR_100Mbps_DIV0 1
+#define XPAR_XEMACPS_0_ENET_SLCR_100Mbps_DIV1 5
+#define XPAR_XEMACPS_0_ENET_SLCR_10Mbps_DIV0 1
+#define XPAR_XEMACPS_0_ENET_SLCR_10Mbps_DIV1 50
+
+
+/******************************************************************/
+
+/* Definitions for driver FANS_CTRL */
+#define XPAR_FANS_CTRL_NUM_INSTANCES 1
+
+/* Definitions for peripheral FANS_CTRL_0 */
+#define XPAR_FANS_CTRL_0_DEVICE_ID 0
+#define XPAR_FANS_CTRL_0_S00_AXI_BASEADDR 0x43C00000
+#define XPAR_FANS_CTRL_0_S00_AXI_HIGHADDR 0x43C0FFFF
+
+
+/******************************************************************/
+
+
+/* Definitions for peripheral PS7_AFI_0 */
+#define XPAR_PS7_AFI_0_S_AXI_BASEADDR 0xF8008000
+#define XPAR_PS7_AFI_0_S_AXI_HIGHADDR 0xF8008FFF
+
+
+/* Definitions for peripheral PS7_AFI_1 */
+#define XPAR_PS7_AFI_1_S_AXI_BASEADDR 0xF8009000
+#define XPAR_PS7_AFI_1_S_AXI_HIGHADDR 0xF8009FFF
+
+
+/* Definitions for peripheral PS7_AFI_2 */
+#define XPAR_PS7_AFI_2_S_AXI_BASEADDR 0xF800A000
+#define XPAR_PS7_AFI_2_S_AXI_HIGHADDR 0xF800AFFF
+
+
+/* Definitions for peripheral PS7_AFI_3 */
+#define XPAR_PS7_AFI_3_S_AXI_BASEADDR 0xF800B000
+#define XPAR_PS7_AFI_3_S_AXI_HIGHADDR 0xF800BFFF
+
+
+/* Definitions for peripheral PS7_DDRC_0 */
+#define XPAR_PS7_DDRC_0_S_AXI_BASEADDR 0xF8006000
+#define XPAR_PS7_DDRC_0_S_AXI_HIGHADDR 0xF8006FFF
+
+
+/* Definitions for peripheral PS7_GLOBALTIMER_0 */
+#define XPAR_PS7_GLOBALTIMER_0_S_AXI_BASEADDR 0xF8F00200
+#define XPAR_PS7_GLOBALTIMER_0_S_AXI_HIGHADDR 0xF8F002FF
+
+
+/* Definitions for peripheral PS7_GPV_0 */
+#define XPAR_PS7_GPV_0_S_AXI_BASEADDR 0xF8900000
+#define XPAR_PS7_GPV_0_S_AXI_HIGHADDR 0xF89FFFFF
+
+
+/* Definitions for peripheral PS7_INTC_DIST_0 */
+#define XPAR_PS7_INTC_DIST_0_S_AXI_BASEADDR 0xF8F01000
+#define XPAR_PS7_INTC_DIST_0_S_AXI_HIGHADDR 0xF8F01FFF
+
+
+/* Definitions for peripheral PS7_IOP_BUS_CONFIG_0 */
+#define XPAR_PS7_IOP_BUS_CONFIG_0_S_AXI_BASEADDR 0xE0200000
+#define XPAR_PS7_IOP_BUS_CONFIG_0_S_AXI_HIGHADDR 0xE0200FFF
+
+
+/* Definitions for peripheral PS7_L2CACHEC_0 */
+#define XPAR_PS7_L2CACHEC_0_S_AXI_BASEADDR 0xF8F02000
+#define XPAR_PS7_L2CACHEC_0_S_AXI_HIGHADDR 0xF8F02FFF
+
+
+/* Definitions for peripheral PS7_OCMC_0 */
+#define XPAR_PS7_OCMC_0_S_AXI_BASEADDR 0xF800C000
+#define XPAR_PS7_OCMC_0_S_AXI_HIGHADDR 0xF800CFFF
+
+
+/* Definitions for peripheral PS7_PL310_0 */
+#define XPAR_PS7_PL310_0_S_AXI_BASEADDR 0xF8F02000
+#define XPAR_PS7_PL310_0_S_AXI_HIGHADDR 0xF8F02FFF
+
+
+/* Definitions for peripheral PS7_PMU_0 */
+#define XPAR_PS7_PMU_0_S_AXI_BASEADDR 0xF8891000
+#define XPAR_PS7_PMU_0_S_AXI_HIGHADDR 0xF8891FFF
+#define XPAR_PS7_PMU_0_PMU1_S_AXI_BASEADDR 0xF8893000
+#define XPAR_PS7_PMU_0_PMU1_S_AXI_HIGHADDR 0xF8893FFF
+
+
+/* Definitions for peripheral PS7_RAM_0 */
+#define XPAR_PS7_RAM_0_S_AXI_BASEADDR 0x00000000
+#define XPAR_PS7_RAM_0_S_AXI_HIGHADDR 0x0003FFFF
+
+
+/* Definitions for peripheral PS7_RAM_1 */
+#define XPAR_PS7_RAM_1_S_AXI_BASEADDR 0xFFFC0000
+#define XPAR_PS7_RAM_1_S_AXI_HIGHADDR 0xFFFFFFFF
+
+
+/* Definitions for peripheral PS7_SCUC_0 */
+#define XPAR_PS7_SCUC_0_S_AXI_BASEADDR 0xF8F00000
+#define XPAR_PS7_SCUC_0_S_AXI_HIGHADDR 0xF8F000FC
+
+
+/* Definitions for peripheral PS7_SLCR_0 */
+#define XPAR_PS7_SLCR_0_S_AXI_BASEADDR 0xF8000000
+#define XPAR_PS7_SLCR_0_S_AXI_HIGHADDR 0xF8000FFF
+
+
+/* Definitions for peripheral PS7_SMCC_0 */
+#define XPAR_PS7_SMCC_0_S_AXI_BASEADDR 0xE000E000
+#define XPAR_PS7_SMCC_0_S_AXI_HIGHADDR 0xE100EFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver GPIOPS */
+#define XPAR_XGPIOPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_GPIO_0 */
+#define XPAR_PS7_GPIO_0_DEVICE_ID 0
+#define XPAR_PS7_GPIO_0_BASEADDR 0xE000A000
+#define XPAR_PS7_GPIO_0_HIGHADDR 0xE000AFFF
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_GPIO_0 */
+#define XPAR_XGPIOPS_0_DEVICE_ID XPAR_PS7_GPIO_0_DEVICE_ID
+#define XPAR_XGPIOPS_0_BASEADDR 0xE000A000
+#define XPAR_XGPIOPS_0_HIGHADDR 0xE000AFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver MCOMPAT_SPI_WRAPPER */
+#define XPAR_MCOMPAT_SPI_WRAPPER_NUM_INSTANCES 1
+
+/* Definitions for peripheral MCOMPAT_SPI_WRAPPER_0 */
+#define XPAR_MCOMPAT_SPI_WRAPPER_0_DEVICE_ID 0
+#define XPAR_MCOMPAT_SPI_WRAPPER_0_S00_AXI_BASEADDR 0x43C30000
+#define XPAR_MCOMPAT_SPI_WRAPPER_0_S00_AXI_HIGHADDR 0x43C3FFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver NANDPS */
+#define XPAR_XNANDPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_NAND_0 */
+#define XPAR_PS7_NAND_0_DEVICE_ID 0
+#define XPAR_PS7_NAND_0_BASEADDR 0xE1000000
+#define XPAR_PS7_NAND_0_HIGHADDR 0xE1000FFF
+#define XPAR_PS7_NAND_0_NAND_CLK_FREQ_HZ 100000000
+#define XPAR_PS7_NAND_0_SMC_BASEADDR 0xE000E000
+#define XPAR_PS7_NAND_0_NAND_WIDTH 8
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_NAND_0 */
+#define XPAR_XNANDPS_0_DEVICE_ID XPAR_PS7_NAND_0_DEVICE_ID
+#define XPAR_XNANDPS_0_CPU_BASEADDR 0xE1000000
+#define XPAR_XNANDPS_0_CPU_HIGHADDR 0xE1000FFF
+#define XPAR_XNANDPS_0_NAND_CLK_FREQ_HZ 100000000
+#define XPAR_XNANDPS_0_SMC_BASEADDR 0xE000E000
+#define XPAR_XNANDPS_0_NAND_WIDTH 8
+
+
+/******************************************************************/
+
+/* Definitions for driver READ_DNA */
+#define XPAR_READ_DNA_NUM_INSTANCES 1
+
+/* Definitions for peripheral READ_DNA_0 */
+#define XPAR_READ_DNA_0_DEVICE_ID 0
+#define XPAR_READ_DNA_0_S00_AXI_BASEADDR 0x43C20000
+#define XPAR_READ_DNA_0_S00_AXI_HIGHADDR 0x43C2FFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver SCUGIC */
+#define XPAR_XSCUGIC_NUM_INSTANCES 1U
+
+/* Definitions for peripheral PS7_SCUGIC_0 */
+#define XPAR_PS7_SCUGIC_0_DEVICE_ID 0U
+#define XPAR_PS7_SCUGIC_0_BASEADDR 0xF8F00100U
+#define XPAR_PS7_SCUGIC_0_HIGHADDR 0xF8F001FFU
+#define XPAR_PS7_SCUGIC_0_DIST_BASEADDR 0xF8F01000U
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_SCUGIC_0 */
+#define XPAR_SCUGIC_0_DEVICE_ID 0U
+#define XPAR_SCUGIC_0_CPU_BASEADDR 0xF8F00100U
+#define XPAR_SCUGIC_0_CPU_HIGHADDR 0xF8F001FFU
+#define XPAR_SCUGIC_0_DIST_BASEADDR 0xF8F01000U
+
+
+/******************************************************************/
+
+/* Definitions for driver SCUTIMER */
+#define XPAR_XSCUTIMER_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_SCUTIMER_0 */
+#define XPAR_PS7_SCUTIMER_0_DEVICE_ID 0
+#define XPAR_PS7_SCUTIMER_0_BASEADDR 0xF8F00600
+#define XPAR_PS7_SCUTIMER_0_HIGHADDR 0xF8F0061F
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_SCUTIMER_0 */
+#define XPAR_XSCUTIMER_0_DEVICE_ID XPAR_PS7_SCUTIMER_0_DEVICE_ID
+#define XPAR_XSCUTIMER_0_BASEADDR 0xF8F00600
+#define XPAR_XSCUTIMER_0_HIGHADDR 0xF8F0061F
+
+
+/******************************************************************/
+
+/* Definitions for driver SCUWDT */
+#define XPAR_XSCUWDT_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_SCUWDT_0 */
+#define XPAR_PS7_SCUWDT_0_DEVICE_ID 0
+#define XPAR_PS7_SCUWDT_0_BASEADDR 0xF8F00620
+#define XPAR_PS7_SCUWDT_0_HIGHADDR 0xF8F006FF
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_SCUWDT_0 */
+#define XPAR_SCUWDT_0_DEVICE_ID XPAR_PS7_SCUWDT_0_DEVICE_ID
+#define XPAR_SCUWDT_0_BASEADDR 0xF8F00620
+#define XPAR_SCUWDT_0_HIGHADDR 0xF8F006FF
+
+
+/******************************************************************/
+
+/* Definitions for driver SDPS */
+#define XPAR_XSDPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_SD_0 */
+#define XPAR_PS7_SD_0_DEVICE_ID 0
+#define XPAR_PS7_SD_0_BASEADDR 0xE0100000
+#define XPAR_PS7_SD_0_HIGHADDR 0xE0100FFF
+#define XPAR_PS7_SD_0_SDIO_CLK_FREQ_HZ 100000000
+#define XPAR_PS7_SD_0_HAS_CD 0
+#define XPAR_PS7_SD_0_HAS_WP 0
+#define XPAR_PS7_SD_0_BUS_WIDTH 0
+#define XPAR_PS7_SD_0_MIO_BANK 0
+#define XPAR_PS7_SD_0_HAS_EMIO 0
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_SD_0 */
+#define XPAR_XSDPS_0_DEVICE_ID XPAR_PS7_SD_0_DEVICE_ID
+#define XPAR_XSDPS_0_BASEADDR 0xE0100000
+#define XPAR_XSDPS_0_HIGHADDR 0xE0100FFF
+#define XPAR_XSDPS_0_SDIO_CLK_FREQ_HZ 100000000
+#define XPAR_XSDPS_0_HAS_CD 0
+#define XPAR_XSDPS_0_HAS_WP 0
+#define XPAR_XSDPS_0_BUS_WIDTH 0
+#define XPAR_XSDPS_0_MIO_BANK 0
+#define XPAR_XSDPS_0_HAS_EMIO 0
+
+
+/******************************************************************/
+
+/* Definitions for driver UARTPS */
+#define XPAR_XUARTPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_UART_1 */
+#define XPAR_PS7_UART_1_DEVICE_ID 0
+#define XPAR_PS7_UART_1_BASEADDR 0xE0001000
+#define XPAR_PS7_UART_1_HIGHADDR 0xE0001FFF
+#define XPAR_PS7_UART_1_UART_CLK_FREQ_HZ 100000000
+#define XPAR_PS7_UART_1_HAS_MODEM 0
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_UART_1 */
+#define XPAR_XUARTPS_0_DEVICE_ID XPAR_PS7_UART_1_DEVICE_ID
+#define XPAR_XUARTPS_0_BASEADDR 0xE0001000
+#define XPAR_XUARTPS_0_HIGHADDR 0xE0001FFF
+#define XPAR_XUARTPS_0_UART_CLK_FREQ_HZ 100000000
+#define XPAR_XUARTPS_0_HAS_MODEM 0
+
+
+/******************************************************************/
+
+/* Definitions for driver USBPS */
+#define XPAR_XUSBPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_USB_0 */
+#define XPAR_PS7_USB_0_DEVICE_ID 0
+#define XPAR_PS7_USB_0_BASEADDR 0xE0002000
+#define XPAR_PS7_USB_0_HIGHADDR 0xE0002FFF
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_USB_0 */
+#define XPAR_XUSBPS_0_DEVICE_ID XPAR_PS7_USB_0_DEVICE_ID
+#define XPAR_XUSBPS_0_BASEADDR 0xE0002000
+#define XPAR_XUSBPS_0_HIGHADDR 0xE0002FFF
+
+
+/******************************************************************/
+
+/* Definitions for driver VID_LED_BUZZER_CTRL */
+#define XPAR_VID_LED_BUZZER_CTRL_NUM_INSTANCES 1
+
+/* Definitions for peripheral VID_LED_BUZZER_CTRL_0 */
+#define XPAR_VID_LED_BUZZER_CTRL_0_DEVICE_ID 0
+#define XPAR_VID_LED_BUZZER_CTRL_0_S00_AXI_BASEADDR 0x43C10000
+#define XPAR_VID_LED_BUZZER_CTRL_0_S00_AXI_HIGHADDR 0x43C1FFFF
+
+
+/******************************************************************/
+
+/* Definitions for driver XADCPS */
+#define XPAR_XADCPS_NUM_INSTANCES 1
+
+/* Definitions for peripheral PS7_XADC_0 */
+#define XPAR_PS7_XADC_0_DEVICE_ID 0
+#define XPAR_PS7_XADC_0_BASEADDR 0xF8007100
+#define XPAR_PS7_XADC_0_HIGHADDR 0xF8007120
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral PS7_XADC_0 */
+#define XPAR_XADCPS_0_DEVICE_ID XPAR_PS7_XADC_0_DEVICE_ID
+#define XPAR_XADCPS_0_BASEADDR 0xF8007100
+#define XPAR_XADCPS_0_HIGHADDR 0xF8007120
+
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG0_OFFSET 0
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG1_OFFSET 4
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG2_OFFSET 8
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG3_OFFSET 12
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG4_OFFSET 16
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG5_OFFSET 20
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG6_OFFSET 24
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG7_OFFSET 28
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG8_OFFSET 32
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG9_OFFSET 36
+#define VID_LED_BUZZER_CTRL_S00_AXI_SLV_REG10_OFFSET 40
+
+#define FANS_CTRL_S00_AXI_SLV_REG0_OFFSET 0
+#define FANS_CTRL_S00_AXI_SLV_REG1_OFFSET 4
+#define FANS_CTRL_S00_AXI_SLV_REG2_OFFSET 8
+#define FANS_CTRL_S00_AXI_SLV_REG3_OFFSET 12
+#define FANS_CTRL_S00_AXI_SLV_REG4_OFFSET 16
+#define FANS_CTRL_S00_AXI_SLV_REG5_OFFSET 20
+#define FANS_CTRL_S00_AXI_SLV_REG6_OFFSET 24
+#define FANS_CTRL_S00_AXI_SLV_REG7_OFFSET 28
+#define FANS_CTRL_S00_AXI_SLV_REG8_OFFSET 32
+#define FANS_CTRL_S00_AXI_SLV_REG9_OFFSET 36
+#define FANS_CTRL_S00_AXI_SLV_REG10_OFFSET 40
+#define FANS_CTRL_S00_AXI_SLV_REG11_OFFSET 44
+
+#define AUTO_CMD0A_REG0_ADDR    0x0160
+#define AUTO_CMD0A_REG1_ADDR    0x0164
+#define AUTO_CMD0A_REG2_ADDR    0x0168
+#define AUTO_CMD0A_REG3_ADDR    0x016c
+#define AUTO_CMD0A_REG4_ADDR    0x0170
+#define AUTO_CMD0A_REG5_ADDR    0x0174
+#define AUTO_CMD0A_REG6_ADDR    0x0178
+#define AUTO_CMD0A_REG7_ADDR    0x017c
+
+#define SPI_RESET_REG       0x1200
+#define SPI_BASEADDR_GAP    0x200
+#define SPI_AXIBASE         0x43C30000
+#define MAX_CHIP_NUM        63
+
+#define XST_SUCCESS                     0L
+#define XST_FAILURE                     1L
+#define XST_DEVICE_NOT_FOUND            2L
+#define XST_DEVICE_BLOCK_NOT_FOUND      3L
+#define XST_INVALID_VERSION             4L
+#define XST_DEVICE_IS_STARTED           5L
+#define XST_DEVICE_IS_STOPPED           6L
+#define XST_FIFO_ERROR                  7L
+#define XST_CRC_ERROR                   8L
+
+#define MAIN_CFG_REG0_ADDR      0x00
+#define MAIN_CFG_REG1_ADDR      0x04
+#define MAIN_CFG_REG2_ADDR      0x08
+#define MAIN_CFG_REG3_ADDR      0x0c
+#define CMD_CTRL_REG0_ADDR      0x10
+#define CMD_CTRL_REG1_ADDR      0x14
+#define CMD_CTRL_REG2_ADDR      0x18
+#define CMD_CTRL_REG3_ADDR      0x1c
+#define CMD_READ_REG0_ADDR      0x20
+#define CMD_READ_REG1_ADDR      0x24
+#define CMD_READ_REG2_ADDR      0x28
+#define CMD_READ_REG3_ADDR      0x2c
+#define CMD_READ_REG4_ADDR      0x30
+#define CMD_READ_REG5_ADDR      0x34
+#define CMD_READ_REG6_ADDR      0x38
+#define CMD_READ_REG7_ADDR      0x3c
+#define CMD_READ_REG8_ADDR      0x40
+#define CMD_READ_REG9_ADDR      0x44
+#define CMD_READ_REGA_ADDR      0x48
+#define CMD_READ_REGB_ADDR      0x4c
+#define CMD_READ_REGC_ADDR      0x50
+#define CMD_READ_REGD_ADDR      0x54
+#define CMD_READ_REGE_ADDR      0x58
+#define CMD_READ_REGF_ADDR      0x5c
+#define CMD_WRITE_HEAD_ADDR     0x60
+#define CMD_WRITE_REG01_ADDR    0x64
+#define CMD_WRITE_REG02_ADDR    0x68
+#define CMD_WRITE_REG03_ADDR    0x6c
+#define CMD_WRITE_REG04_ADDR    0x70
+#define CMD_WRITE_REG05_ADDR    0x74
+#define CMD_WRITE_REG06_ADDR    0x78
+#define CMD_WRITE_REG07_ADDR    0x7c
+#define CMD_WRITE_REG08_ADDR    0x80
+#define CMD_WRITE_REG09_ADDR    0x84
+#define CMD_WRITE_REG0A_ADDR    0x88
+#define CMD_WRITE_REG0B_ADDR    0x8c
+#define CMD_WRITE_REG0C_ADDR    0x90
+#define CMD_WRITE_REG0D_ADDR    0x94
+#define CMD_WRITE_REG0E_ADDR    0x98
+#define CMD_WRITE_REG0F_ADDR    0x9c
+#define CMD_WRITE_REG10_ADDR    0xa0
+#define CMD_WRITE_REG11_ADDR    0xa4
+#define CMD_WRITE_REG12_ADDR    0xa8
+#define CMD_WRITE_REG13_ADDR    0xac
+#define CMD_WRITE_REG14_ADDR    0xb0
+#define CMD_WRITE_REG15_ADDR    0xb4
+#define CMD_WRITE_REG16_ADDR    0xb8
+#define CMD_WRITE_REG17_ADDR    0xbc
+#define CMD_WRITE_REG18_ADDR    0xc0
+#define CMD_WRITE_REG19_ADDR    0xc4
+#define CMD_WRITE_REG1A_ADDR    0xc8
+#define CMD_WRITE_REG1B_ADDR    0xcc
+#define CMD_WRITE_REG1C_ADDR    0xd0
+#define CMD_WRITE_REG1D_ADDR    0xd4
+#define CMD_WRITE_REG1E_ADDR    0xd8
+#define CMD_WRITE_REG1F_ADDR    0xdc
+#define CMD_WRITE_REG20_ADDR    0xe0
+#define CMD_WRITE_REG21_ADDR    0xe4
+#define CMD_WRITE_REG22_ADDR    0xe8
+#define CMD_WRITE_REG23_ADDR    0xec
+#define CMD_WRITE_REG24_ADDR    0xf0
+#define CMD_WRITE_REG25_ADDR    0xf4
+#define CMD_WRITE_REG26_ADDR    0xf8
+#define CMD_WRITE_REG27_ADDR    0xfc
+
+#define SPI_BUFFER_SIZE     170
+#define SPI_TX_BUF_SIZE     (((CMD_WRITE_REG27_ADDR-CMD_WRITE_HEAD_ADDR) / 4) + 1) * 2
+#define SPI_RX_BUF_SIZE     (((CMD_READ_REGF_ADDR-CMD_READ_REG0_ADDR) / 4) + 1) * 2
+
+#define CHK_HY              0x00000080
+#define CHK_H1              0x00000040
+#define CHK_LN              0x00000020
+#define CHK_CMD             0x00000004
+#define CHK_ID              0x00000008
+
+
+#define SPI_BYPASS_EN       0x00001000
+#define SPI_BYPASS_END      0x00002000
+
+
+#define REORDER16(arg)      ((uint16_t)(arg<<8 | arg>>8))
+
+
+#define SYSTEM_LINUX
+
+
+void hub_init(void);
+
+void hub_deinit(void);
+
+int Xil_SPI_In32(uint32_t phyaddr);
+
+void Xil_SPI_Out32(uint32_t phyaddr, uint32_t val);
+
+
+extern bool rece_queue_has_nonce(uint8_t spi_id, uint32_t timeout_us);
+
+extern void read_nonce_buffer(uint8_t spi_id, uint8_t* buf8, uint32_t len_cfg);
+
+extern int send_job_queue(uint8_t spi_id, uint8_t* tx_buf8, uint8_t* rx_buf8, uint32_t len_cfg, uint32_t last_job);
+
+extern int do_spi_cmd(uint8_t spi_id, uint8_t* tx_buf8, uint8_t* rx_buf8, uint32_t len_cfg);
+
+int hub_spi_init(uint8_t spi_id, uint8_t chip_num);
+
+void hub_spi_clean_chain(uint32_t spi_id);
+
+void hub_set_spi_speed(uint8_t spi_id, int select);
+
+void hub_set_power_en(uint8_t chain_id, int value);
+
+void hub_set_start_en(uint8_t chain_id, int value);
+
+void hub_set_reset(uint8_t chain_id, int value);
+
+void hub_set_led(uint8_t chain_id, int mode);
+
+bool hub_set_vid(uint8_t chain_id, int vid);
+
+void hub_set_pwm(uint8_t fan_id, int frequency, int duty);
+
+int hub_get_plug(uint8_t chain_id);
+
+void hub_set_green_led(int mode);
+
+void hub_set_red_led(int mode);
+
+int hub_get_button(void);
+
+int enable_auto_nonce(uint8_t chain_id, uint16_t cmd08_cmd, uint32_t len_cfg);
+
+int disable_auto_nonce(uint8_t chain_id);
+
+void enable_auto_cmd0a(uint8_t spi_id, uint32_t threshold, uint32_t msb, uint32_t lsb, uint32_t large_en, uint32_t mode );//mode : 1 only cmd0a;0 cmd08 follows cmd0a
+
+void disable_auto_cmd0a(uint8_t spi_id, uint32_t threshold, uint32_t msb, uint32_t lsb, uint32_t large_en, uint32_t mode );//mode : 1 only cmd0a;0 cmd08 follows cmd0a
+
+uint32_t hub_get_hitemp_stat(uint8_t chain_id,mcompat_temp_s *temp_ctrl);
+
+uint32_t hub_get_lotemp_stat(uint8_t chain_id,mcompat_temp_s *temp_ctrl);
+
+uint32_t hub_get_avgtemp_stat(uint8_t chain_id,mcompat_temp_s *temp_ctrl);
+
+void init_hub_gpio(void);
+
+
+
+/* 修改bit后的宏定义 */
+//#define XPAR_MCOMPAT_PERIPHERAL_0_S00_AXI_BASEADDR 0x43C00000
+
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG0_OFFSET 0
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG1_OFFSET 4
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG2_OFFSET 8
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG3_OFFSET 12
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG4_OFFSET 16
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG5_OFFSET 20
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG6_OFFSET 24
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG7_OFFSET 28
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG8_OFFSET 32
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG9_OFFSET 36
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG10_OFFSET 40
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG11_OFFSET 44
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG12_OFFSET 48
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG13_OFFSET 52
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG14_OFFSET 56
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG15_OFFSET 60
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG16_OFFSET 64
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG17_OFFSET 68
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG18_OFFSET 72
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG19_OFFSET 76
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG20_OFFSET 80
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG21_OFFSET 84
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG22_OFFSET 88
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG23_OFFSET 92
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG24_OFFSET 96
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG25_OFFSET 100
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG26_OFFSET 104
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG27_OFFSET 108
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG28_OFFSET 112
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG29_OFFSET 116
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG30_OFFSET 120
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG31_OFFSET 124
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG32_OFFSET 128
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG33_OFFSET 132
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG34_OFFSET 136
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG35_OFFSET 140
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG36_OFFSET 144
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG37_OFFSET 148
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG38_OFFSET 152
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG39_OFFSET 156
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG40_OFFSET 160
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG41_OFFSET 164
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG42_OFFSET 168
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG43_OFFSET 172
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG44_OFFSET 176
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG45_OFFSET 180
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG46_OFFSET 184
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG47_OFFSET 188
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG48_OFFSET 192
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG49_OFFSET 196
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG50_OFFSET 200
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG51_OFFSET 204
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG52_OFFSET 208
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG53_OFFSET 212
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG54_OFFSET 216
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG55_OFFSET 220
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG56_OFFSET 224
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG57_OFFSET 228
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG58_OFFSET 232
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG59_OFFSET 236
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG60_OFFSET 240
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG61_OFFSET 244
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG62_OFFSET 248
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG63_OFFSET 252
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG64_OFFSET 256
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG65_OFFSET 260
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG66_OFFSET 264
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG67_OFFSET 268
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG68_OFFSET 272
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG69_OFFSET 276
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG70_OFFSET 280
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG71_OFFSET 284
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG72_OFFSET 288
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG73_OFFSET 292
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG74_OFFSET 296
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG75_OFFSET 300
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG76_OFFSET 304
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG77_OFFSET 308
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG78_OFFSET 312
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG79_OFFSET 316
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG80_OFFSET 320
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG81_OFFSET 324
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG82_OFFSET 328
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG83_OFFSET 332
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG84_OFFSET 336
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG85_OFFSET 340
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG86_OFFSET 344
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG87_OFFSET 348
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG88_OFFSET 352
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG89_OFFSET 356
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG90_OFFSET 360
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG91_OFFSET 364
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG92_OFFSET 368
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG93_OFFSET 372
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG94_OFFSET 376
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG95_OFFSET 380
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG96_OFFSET 384
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG97_OFFSET 388
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG98_OFFSET 392
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG99_OFFSET 396
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG100_OFFSET 400
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG101_OFFSET 404
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG102_OFFSET 408
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG103_OFFSET 412
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG104_OFFSET 416
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG105_OFFSET 420
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG106_OFFSET 424
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG107_OFFSET 428
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG108_OFFSET 432
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG109_OFFSET 436
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG110_OFFSET 440
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG111_OFFSET 444
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG112_OFFSET 448
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG113_OFFSET 452
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG114_OFFSET 456
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG115_OFFSET 460
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG116_OFFSET 464
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG117_OFFSET 468
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG118_OFFSET 472
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG119_OFFSET 476
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG120_OFFSET 480
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG121_OFFSET 484
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG122_OFFSET 488
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG123_OFFSET 492
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG124_OFFSET 496
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG125_OFFSET 500
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG126_OFFSET 504
+#define MCOMPAT_PERIPHERAL_S00_AXI_SLV_REG127_OFFSET 508
+
+#endif
+

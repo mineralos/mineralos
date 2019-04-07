@@ -1,0 +1,13 @@
+[Unit]
+Description=SWUpdate daemon
+Documentation=https://github.com/sbabic/swupdate
+Documentation=https://sbabic.github.io/swupdate
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sh -c "if fw_printenv -n hwrevision; then /bin/systemctl set-environment HWREVISION=\"-H \'$$(fw_printenv -n hwrevision)\'\"; else /bin/systemctl set-environment HWREVISION=\"\"; fi"
+ExecStartPre=/bin/sh -c "if [ $(fw_printenv -n image_flag) -eq 1 ]; then /bin/systemctl set-environment UPDATE_FLAG=main; else /bin/systemctl set-environment UPDATE_FLAG=alt; fi"
+ExecStart=/usr/bin/swupdate -v --key /etc/swupdate.pem -b "0 1 2 3 4 5 6 7" $HWREVISION --select stable,${UPDATE_FLAG} -w '--document-root /var/www/swupdate --port 127.0.0.1:8080' -p '/bin/systemctl reboot'
+
+[Install]
+WantedBy=multi-user.target

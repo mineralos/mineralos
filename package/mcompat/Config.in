@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MCOMPAT
+	bool "MCOMPAT"
+	depends on BR2_arm
+	help
+	  miner compatibility lib

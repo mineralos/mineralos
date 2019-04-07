@@ -1,0 +1,12 @@
+[Unit]
+Description=Format config ubi partition
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=-/sbin/ubidetach /dev/ubi_ctrl -m 10
+ExecStartPre=/sbin/ubiformat -y /dev/mtd10
+ExecStartPre=/sbin/ubiattach -m 10 /dev/ubi_ctrl
+ExecStart=/sbin/ubimkvol /dev/ubi1 -N config -m
+ExecStartPost=/sbin/ubidetach /dev/ubi_ctrl -m 10
+ExecStartPost=/bin/systemctl isolate default.target

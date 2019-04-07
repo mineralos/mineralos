@@ -1,0 +1,18 @@
+[Unit]
+Description=Cgminer
+After=network.target config.mount
+Requires=config.mount
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+PrivateTmp=no
+ExecStartPre=/bin/sh -c "if [ ! -s /config/restartTest ]; then cp -f /etc/config/restartTest.default /config/restartTest; fi"
+ExecStartPre=/bin/sh -c "if [ ! -s /config/rebootTest ]; then cp -f /etc/config/rebootTest.default /config/rebootTest; fi"
+ExecStartPre=/bin/sh -c "if [ ! -s /config/cgminer.conf ]; then cp -f /etc/cgminer.conf.default /config/cgminer.conf; fi"
+ExecStart=/bin/cgminer -c /etc/cgminer.conf --api-listen --api-network --syslog --text-only
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

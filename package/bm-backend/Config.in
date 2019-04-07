@@ -1,0 +1,4 @@
+config BR2_PACKAGE_BM_BACKEND
+	bool "bm-backend"
+	help
+	  AntMiner backend php app

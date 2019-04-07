@@ -1,0 +1,429 @@
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 247b09b..a0a831f 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -796,6 +796,12 @@ config XILINX_VCU
+        help
+           Driver for the Xilinx VCU Init based on the logicoreIP.
+ 
++config DNA_XILINX
++       tristate "Xilinx ZYNQ DNA driver"
++       default y
++       help
++          Driver for the Xilinx DNA from fpga.
++
+ source "drivers/misc/jesd204b/Kconfig"
+ source "drivers/misc/c2port/Kconfig"
+ source "drivers/misc/eeprom/Kconfig"
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index e0bb6e0..10ea893 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -31,6 +31,7 @@ obj-$(CONFIG_ISL29020)		+= isl29020.o
+ obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
+ obj-$(CONFIG_DS1682)		+= ds1682.o
+ obj-$(CONFIG_TI_DAC7512)	+= ti_dac7512.o
++obj-$(CONFIG_DNA_XILINX)        += dna_xilinx.o
+ obj-$(CONFIG_C2PORT)		+= c2port/
+ obj-$(CONFIG_HMC6352)		+= hmc6352.o
+ obj-y				+= eeprom/
+diff --git a/drivers/misc/dna_xilinx.c b/drivers/misc/dna_xilinx.c
+new file mode 100644
+index 0000000..1a25924
+--- /dev/null
++++ b/drivers/misc/dna_xilinx.c
+@@ -0,0 +1,347 @@
++/*  blink.c - The simplest kernel module.
++ */
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/module.h>
++
++#include <linux/fs.h>
++
++#include <linux/slab.h>
++#include <linux/io.h>
++#include <linux/interrupt.h>
++
++#include <linux/of_address.h>
++#include <linux/of_device.h>
++#include <linux/of_platform.h>
++
++#include <asm/uaccess.h> /* for get_user and put_user */
++#include <asm/io.h>
++#include "dna_xilinx.h"
++#define SUCCESS 0
++#define DEVICE_NAME_0 "dna"
++
++
++#define DNA_CTRL_REG 0x43C20000
++static void *mmio_0;
++static int major_num_0;
++static struct class *dev_class_0;
++static struct device *dev_device_0;
++
++/*
++* Is the device open right now? Used to prevent
++* concurent access into the same device
++*/
++static int Device_Open = 0;
++
++
++//void get_dna_value(uint32_t *param)
++//{
++//        printk("KERNEL PRINT : get_pwmgen_freq at:%x \n\r", ((unsigned int *)mmio_0));
++//	*param = *(unsigned int *)(mmio_0);
++//
++//}
++
++/*
++* This is called whenever a process attempts to open the device file
++*/
++static int device_open(struct inode *inode, struct file *file)
++{
++	//#ifdef DEBUG
++	//	printk(KERN_INFO "device_open(%p)\n", file);
++	//#endif
++	/*
++	* We don't want to talk to two processes at the same time
++	*/
++	if (Device_Open)
++		return -EBUSY;
++	Device_Open++;
++	/*
++	* Initialize the message
++	*/
++//	Message_Ptr = Message;
++	try_module_get(THIS_MODULE);
++	return SUCCESS;
++}
++static int device_release(struct inode *inode, struct file *file)
++{
++	//#ifdef DEBUG
++	//	printk(KERN_INFO "device_release(%p,%p)\n", inode, file);
++	//#endif
++	/*
++	* We're now ready for our next caller
++	*/
++	Device_Open--;
++	module_put(THIS_MODULE);
++	return SUCCESS;
++}
++/*
++* This function is called whenever a process which has already opened the
++* device file attempts to read from it.
++*/
++static ssize_t device_read(	struct file *file, /* see include/linux/fs.h */
++							char __user * buffer, /* buffer to be filled with data */
++							size_t length, /* length of the buffer */
++							loff_t * offset)
++{
++	char dna[8];
++
++        if (length == 0 || *offset != 0)
++                return 0;
++
++        dna[0] = *(unsigned char *)(mmio_0 + 0);
++        dna[1] = *(unsigned char *)(mmio_0 + 1);
++        dna[2] = *(unsigned char *)(mmio_0 + 2);
++        dna[3] = *(unsigned char *)(mmio_0 + 3);
++        dna[4] = *(unsigned char *)(mmio_0 + 4);
++        dna[5] = *(unsigned char *)(mmio_0 + 5);
++        dna[6] = *(unsigned char *)(mmio_0 + 6);
++        dna[7] = *(unsigned char *)(mmio_0 + 7);
++
++	if (copy_to_user(buffer, dna, length))
++        	return -EFAULT;
++
++        *offset += length;
++
++	return length;
++}
++/*
++* This function is called when somebody tries to
++* write into our device file.
++*/
++static ssize_t device_write(struct file *file,
++							const char __user * buffer, 
++							size_t length, 
++							loff_t * offset)
++{
++	return SUCCESS;
++}
++/*
++* This function is called whenever a process tries to do an ioctl on our
++* device file. We get two extra parameters (additional to the inode and file
++* structures, which all device functions get): the number of the ioctl called
++* and the parameter given to the ioctl function.
++*
++* If the ioctl is write or read/write (meaning output is returned to the
++* calling process), the ioctl call returns the output of this function.
++*
++*/
++static long device_ioctl(		struct file *file, /* ditto */
++					unsigned int ioctl_num, /* number and param for ioctl */
++					unsigned long ioctl_param)
++{
++//	uint32_t i;
++//	char *temp;
++//	char ch;
++	/*
++	* Switch according to the ioctl called
++	*/
++	switch (ioctl_num) 
++	{
++//        	case IOCTL_GET_DNA:
++//        	        get_dna_value((uint32_t *)ioctl_param);
++//        	break;	
++	}
++	return SUCCESS;
++}
++/* Module Declarations */
++/*
++* This structure will hold the functions to be called
++* when a process does something to the device we
++* created. Since a pointer to this structure is kept in
++* the devices table, it can't be local to
++* init_module. NULL is for unimplemented functions.
++*/
++struct file_operations xlin_dna_Fops = {
++	.owner = THIS_MODULE,       
++	.read = device_read,
++	.write = device_write,
++	.unlocked_ioctl = device_ioctl,
++	.open = device_open,
++	.release = device_release, /*close */								
++};
++
++
++
++/* Standard module information, edit as appropriate */
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR
++    ("Xilinx Inc.");
++MODULE_DESCRIPTION
++    ("DNA - loadable module template generated by petalinux-create -t modules");
++
++#define DRIVER_NAME "dna"
++#define IOCTL_SET_MSG _IOR(MAJOR_NUM, 0, char *)
++#define IOCTL_GET_MSG _IOR(MAJOR_NUM, 1, char *)
++
++
++/* Simple example of how to receive command line parameters to your module.
++   Delete if you don't need them */
++static unsigned myint = 0xdeadbeef;
++static char *mystr = "default";
++
++module_param(myint, int, S_IRUGO);
++module_param(mystr, charp, S_IRUGO);
++
++struct dna_local {
++	int irq;
++	unsigned long mem_start;
++	unsigned long mem_end;
++	void __iomem *base_addr;
++};
++
++static irqreturn_t dna_irq(int irq, void *lp)
++{
++	printk("dna interrupt\n");
++	return IRQ_HANDLED;
++}
++
++static int dna_probe(struct platform_device *pdev)
++{
++	struct resource *r_irq; /* Interrupt resources */
++	struct resource *r_mem; /* IO mem resources */
++	struct device *dev = &pdev->dev;
++	struct dna_local *lp = NULL;
++
++	int rc = 0;
++	
++	dev_info(dev, "Device Tree Probing\n");
++
++	/* Get iospace for the device */
++	r_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!r_mem) {
++		dev_err(dev, "invalid address\n");
++		return -ENODEV;
++	}
++	
++	lp = (struct dna_local *) kmalloc(sizeof(struct dna_local), GFP_KERNEL);
++	if (!lp) {
++		dev_err(dev, "Cound not allocate dna device\n");
++		return -ENOMEM;
++	}
++	
++	dev_set_drvdata(dev, lp);
++	
++	lp->mem_start = r_mem->start;
++	lp->mem_end = r_mem->end;
++
++	if (!request_mem_region(lp->mem_start,
++				lp->mem_end - lp->mem_start + 1,
++				DRIVER_NAME)) {
++		dev_err(dev, "Couldn't lock memory region at %p\n",
++			(void *)lp->mem_start);
++		rc = -EBUSY;
++		goto error1;
++	}
++
++	lp->base_addr = ioremap(lp->mem_start, lp->mem_end - lp->mem_start + 1);
++	if (!lp->base_addr) {
++		dev_err(dev, "dna: Could not allocate iomem\n");
++		rc = -EIO;
++		goto error2;
++	}
++
++	/* Get IRQ for the device */
++	r_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!r_irq) {
++		dev_info(dev, "no IRQ found\n");
++		dev_info(dev, "dna at 0x%08x mapped to 0x%08x\n",
++			(unsigned int __force)lp->mem_start,
++			(unsigned int __force)lp->base_addr);
++		return 0;
++	}
++	lp->irq = r_irq->start;
++	
++	rc = request_irq(lp->irq, &dna_irq, 0, DRIVER_NAME, lp);
++	if (rc) {
++		dev_err(dev, "testmodule: Could not allocate interrupt %d.\n",
++			lp->irq);
++		goto error3;
++	}
++
++	dev_info(dev,"dna at 0x%08x mapped to 0x%08x, irq=%d\n",
++		(unsigned int __force)lp->mem_start,
++		(unsigned int __force)lp->base_addr,
++		lp->irq);
++	return 0;
++error3:
++	free_irq(lp->irq, lp);
++error2:
++	release_mem_region(lp->mem_start, lp->mem_end - lp->mem_start + 1);
++error1:
++	kfree(lp);
++	dev_set_drvdata(dev, NULL);
++	return rc;
++}
++
++static int dna_remove(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct dna_local *lp = dev_get_drvdata(dev);
++	free_irq(lp->irq, lp);
++	release_mem_region(lp->mem_start, lp->mem_end - lp->mem_start + 1);
++	kfree(lp);
++	dev_set_drvdata(dev, NULL);
++	return 0;
++}
++
++#ifdef CONFIG_OF
++static struct of_device_id dna_of_match[] = {
++	{ .compatible = "vendor,dna", },
++	{ /* end of list */ },
++};
++MODULE_DEVICE_TABLE(of, dna_of_match);
++#else
++# define dna_of_match
++#endif
++
++
++static struct platform_driver dna_driver = {
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++		.of_match_table	= dna_of_match,
++	},
++	.probe		= dna_probe,
++	.remove		= dna_remove,
++};
++
++static int __init dna_init(void)
++{
++	//printk("<1>Hello module world.\n");
++	//printk("<1>Module parameters were (0x%08x) and \"%s\"\n", myint,
++	//       mystr);
++
++	/*
++	* Register the character device (atleast try)
++	*/
++	major_num_0 = register_chrdev(0,DEVICE_NAME_0, &xlin_dna_Fops);
++	if (major_num_0 < 0) 
++	{
++		printk(KERN_ALERT "%s failed with \n","Sorry, registering the character device ");
++	}
++	dev_class_0 = class_create(THIS_MODULE, DEVICE_NAME_0);
++
++	dev_device_0 = device_create(dev_class_0, NULL, MKDEV(major_num_0, 0), NULL, DEVICE_NAME_0);
++	
++	mmio_0 = ioremap(DNA_CTRL_REG,0x100);
++        
++    //printk(KERN_INFO "%s the major device number is %d.\n","Registeration is a success", major_num_0);
++	//printk(KERN_INFO "If you want to talk to the device driver,\n");
++	//printk(KERN_INFO "create a device file by following command. \n \n");
++	//printk(KERN_INFO "mknod %s c %d 0\n\n", DEVICE_NAME_0, major_num_0);
++	//printk(KERN_INFO "The device file name is important, because\n");
++	//printk(KERN_INFO "the ioctl program assumes that's the file you'll use\n");
++
++
++	return platform_driver_register(&dna_driver);
++}
++
++
++static void __exit dna_exit(void)
++{
++	platform_driver_unregister(&dna_driver);
++	printk(KERN_ALERT "Goodbye module world.\n");
++}
++
++module_init(dna_init);
++module_exit(dna_exit)
+diff --git a/drivers/misc/dna_xilinx.h b/drivers/misc/dna_xilinx.h
+new file mode 100644
+index 0000000..bb3613b
+--- /dev/null
++++ b/drivers/misc/dna_xilinx.h
+@@ -0,0 +1,41 @@
++/*
++* blink.h - the header file with the ioctl definitions.
++*
++* The declarations here have to be in a header file, because
++* they need to be known both to the kernel module
++* (in chardev.c) and the process calling ioctl (ioctl.c)
++*/
++#ifndef FANDECT_H
++#define FANDECT_H
++#include <linux/ioctl.h>
++/*
++* The major device number. We can't rely on dynamic
++* registration any more, because ioctls need to know
++* it.
++*/
++#define MAGIC_NUM 100
++/*
++* TURN ON LED ioctl
++*/
++//#define IOCTL_GET_DNA _IOR(MAGIC_NUM, 0, char *)
++/*
++* _IOR means that we're creating an ioctl command
++* number for passing information from a user process
++* to the kernel module.
++*
++* The first arguments, MAGIC_NUM, is the major device
++* number we're using.
++*
++* The second argument is the number of the command
++* (there could be several with different meanings).
++*
++* The third argument is the type we want to get from
++* the process to the kernel.
++*/
++/*
++* STOP LED BLINK ioctl
++*/
++#define DEBUG
++
++#define DEVICE_FILE_NAME_0 "/dev/dna"
++#endif

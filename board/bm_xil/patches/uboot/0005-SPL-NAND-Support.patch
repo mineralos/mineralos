@@ -1,0 +1,219 @@
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 78a39ab..bcced8e 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -230,6 +230,22 @@ config SPL_NAND_SIMPLE
+ 	help
+ 	  Support for NAND boot using simple NAND drivers that
+ 	  expose the cmd_ctrl() interface.
++
++config SPL_NAND_BBT
++	bool "Use SPL BBT driver"
++
++config SPL_NAND_IDS
++	bool "Use SPL IDS drier"
++
++config SPL_NAND_TIMINGS
++	bool "Use SPL TIMINGS driver"
++
++config SPL_NAND_ZYNQ
++	bool "Use SPL ZYNQ driver"
++
++config SYS_NO_FLASH
++	bool "Set SYS_NO_FLASH"
++
+ endif
+ 
+ endif   # if NAND
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index 9f7d9d6..f63cbc0 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -14,10 +14,15 @@ endif
+ obj-$(CONFIG_SPL_NAND_AM33XX_BCH) += am335x_spl_bch.o
+ obj-$(CONFIG_SPL_NAND_DENALI) += denali_spl.o
+ obj-$(CONFIG_SPL_NAND_SIMPLE) += nand_spl_simple.o
++obj-$(CONFIG_SPL_NAND_ZYNQ) += zynq_nand_spl.o
+ obj-$(CONFIG_SPL_NAND_LOAD) += nand_spl_load.o
++obj-$(CONFIG_SPL_NAND_BBT) += nand_bbt.o
++obj-$(CONFIG_SPL_NAND_IDS) += nand_ids.o
+ obj-$(CONFIG_SPL_NAND_ECC) += nand_ecc.o
+ obj-$(CONFIG_SPL_NAND_BASE) += nand_base.o
++obj-$(CONFIG_SPL_NAND_TIMINGS) += nand_timings.o
+ obj-$(CONFIG_SPL_NAND_INIT) += nand.o
++obj-$(CONFIG_SPL_NAND_INIT) += ../mtdcore.o ../mtd_uboot.o
+ ifeq ($(CONFIG_SPL_ENV_SUPPORT),y)
+ obj-$(CONFIG_ENV_IS_IN_NAND) += nand_util.o
+ endif
+diff --git a/drivers/mtd/nand/zynq_nand_spl.c b/drivers/mtd/nand/zynq_nand_spl.c
+new file mode 100644
+index 0000000..b56d1c1
+--- /dev/null
++++ b/drivers/mtd/nand/zynq_nand_spl.c
+@@ -0,0 +1,120 @@
++/*
++ * Elphel393 NAND driver for SPL, not based on denali_spl.c
++ *
++ * Copyright (C) 2016 Elphel, Inc.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <malloc.h>
++#include <asm/io.h>
++#include <errno.h>
++#include <nand.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/rawnand.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/nand_ecc.h>
++#include <asm/arch/hardware.h>
++#include <asm/arch/sys_proto.h>
++
++extern struct mtd_info nand_info[CONFIG_SYS_MAX_NAND_DEVICE];
++
++static int is_badblock(struct mtd_info *mtd, loff_t offs, int allowbbt)
++{
++	register struct nand_chip *chip = mtd->priv;
++	unsigned int block = offs >> chip->phys_erase_shift;
++	unsigned int page = offs >> chip->page_shift;
++	unsigned long data_width = 4;
++
++	debug("    is_badblock(): offs=0x%08x block=%d page=%d\n",(int)offs,block,page);
++	chip->cmdfunc(mtd, NAND_CMD_READOOB, 0, page);
++	chip->read_buf(mtd, chip->oob_poi, (mtd->oobsize - data_width));
++
++	printf("    is_badblock(): offs=0x%08x block=0x%08x page=0x%08x chip->oob_poi[0]=0x%08x\n",(u32)offs,(u32)block,(u32)page,(u32)chip->oob_poi[0]);
++
++	return chip->oob_poi[0] != 0xff;
++}
++
++//dst or buf - destination in RAM
++//offs - u-boot-dtb.img offset in NAND
++//size - size of u-boot-dtb.img
++int nand_spl_load_image(uint32_t offs, unsigned int size, void *buf)
++{
++	struct nand_chip *chip;
++	struct mtd_info *mtd;
++	unsigned int page;
++	unsigned int nand_page_per_block;
++	unsigned int sz = 0;
++
++	debug("\nnand_spl_load_image(): offs=0x%08x size=%d (0x%08x) buf_addr=0x%08x\n",offs,size,size,buf);
++	udelay(10000);
++
++	//if (mxs_nand_init()) return -ENODEV;
++	mtd = get_nand_dev_by_index(0);
++	//mtd.priv = &nand_chip;
++	chip = mtd->priv;
++	page = offs >> chip->page_shift;
++	nand_page_per_block = mtd->erasesize / mtd->writesize;
++
++	debug("%s offset:0x%08x len:%d page:%d\n", __func__, offs, size, page);
++
++	debug("  nand_page_per_block= %d\n",nand_page_per_block);
++	debug("  mtd->writesize= %d\n",mtd->writesize);
++	debug("  u-boot-dtb.img size is: %d (0x%08x)\n",size,size);
++
++	size = roundup(size, mtd->writesize);
++
++	debug("  u-boot-dtb.img size after roundup is:%d\n",size);
++
++	while (sz < size) {
++		//if (mxs_read_page_ecc(&mtd, buf, page) < 0)
++		//	return -1;
++		//printf("  Reading from NAND, offset:0x%08x page_index:%d to MEM address:0x%08x\n",offs, page, buf);
++
++		chip->cmdfunc(mtd, NAND_CMD_READ0, 0, page);
++		udelay(500);
++		//read min
++		chip->read_buf(mtd,buf,min(size-sz, mtd->writesize));
++
++		//chip->ecc.read_page(mtd, chip, buf, 0, page);
++		sz += mtd->writesize;
++		offs += mtd->writesize;
++		page++;
++		buf += mtd->writesize;
++
++		/*
++		 * Check if we have crossed a block boundary, and if so
++		 * check for bad block.
++		 */
++		//on-die ecc is enabled
++		//if (!(page % nand_page_per_block)) {
++		//	/*
++		//	 * Yes, new block. See if this block is good. If not,
++		//	 * loop until we find a good block.
++		//	 */
++		//	while (is_badblock(&mtd, offs, 1)) {
++		//		page = page + nand_page_per_block;
++		//		/* Check we've reached the end of flash. */
++		//		if (page >= mtd->size >> chip->page_shift)
++		//			return -ENOMEM;
++		//	}
++		//}
++	}
++	return 0;
++}
++
++/* already defined in nand.c
++// nand_init() - initialize data to make nand usable by SPL
++void nand_init(void)
++{
++	puts("nand_init()\n");
++	udelay(5000);
++	board_nand_init();
++}
++*/
++
++void nand_deselect(void) {
++	debug("nand_deselect()\n");
++	udelay(10000);
++}
+diff --git a/include/configs/bitmain_antminer_s9.h b/include/configs/bitmain_antminer_s9.h
+index e914704..54180a0 100644
+--- a/include/configs/bitmain_antminer_s9.h
++++ b/include/configs/bitmain_antminer_s9.h
+@@ -9,6 +9,28 @@
+ #define CONFIG_SYS_SDRAM_BASE	0x00000000
+ #define CONFIG_SYS_SDRAM_SIZE	0x40000000
+ 
++#define CONFIG_SYS_NO_FLASH
++
++#define CONFIG_SPL_NAND_ZYNQ
++
++#define CONFIG_SYS_NAND_U_BOOT_OFFS	0x100000
++
++#define CONFIG_SPL_NAND_SUPPORT
++#define CONFIG_SPL_NAND_DRIVERS
++
++#define CONFIG_SPL_NAND_INIT
++#define CONFIG_SPL_NAND_TIMINGS
++#define CONFIG_SPL_NAND_BASE
++#define CONFIG_SPL_NAND_ECC
++#define CONFIG_SPL_NAND_BBT
++#define CONFIG_SPL_NAND_IDS
++
++/* Load U-Boot to this address */
++#define CONFIG_SYS_NAND_U_BOOT_DST	CONFIG_SYS_TEXT_BASE
++#define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST
++
++#define CONFIG_MTD
++
+ #define CONFIG_BOOTP_SERVERIP
+ 
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+@@ -119,4 +141,9 @@
+ 
+ #include <configs/zynq-common.h>
+ 
++/*skip u-boot falcon mode*/
++#undef CONFIG_SPL_OS_BOOT
++
++#define CONFIG_CMD_MEMTEST
++
+ #endif /* __CONFIG_BITMAIN_ANTMINER_S9_H */
+-- 
+2.7.4
+

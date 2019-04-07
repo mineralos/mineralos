@@ -1,0 +1,19 @@
+[Unit]
+Description=Cgminer4t4
+After=network.target config.mount
+Requires=config.mount
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+PrivateTmp=no
+ExecStartPre=/bin/sh -c "mkdir -p /tmp/log"
+ExecStartPre=/bin/sh -c "echo "A8+" > /tmp/type"
+ExecStartPre=/bin/sh -c "echo "G19" > /tmp/hwver"
+ExecStartPre=/bin/sh -c "if [ ! -s /config/cgminer.conf ]; then cp -f /etc/cgminer.conf.default /config/cgminer.conf; fi"
+ExecStart=/bin/cgminer -c /etc/cgminer.conf --api-listen --api-network --syslog --text-only
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

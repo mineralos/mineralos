@@ -1,0 +1,6 @@
+local.mk
+output/
+dl/
+board/g19/priv.pem
+board/bm_xil/priv.pem
+.buildroot-ccache

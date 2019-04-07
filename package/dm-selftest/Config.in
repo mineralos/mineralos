@@ -1,0 +1,5 @@
+config BR2_PACKAGE_DM_SELFTEST
+	bool "dm-selftest"
+	depends on BR2_arm
+	help
+	  Dragonmint selftest
